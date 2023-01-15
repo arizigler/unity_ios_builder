@@ -6,30 +6,38 @@ if [[ $# -eq 0 || "$1" == "--help" ]]; then
 fi
 
 install_to_device=false
-dev_team=""
-while getopts "i:d:" opt; do
-  case $opt in
-    i)
-      install_to_device=true
-      ;;
-    d)
-      dev_team=$OPTARG
-      ;;
-    \?)
-      echo "Invalid option: -$OPTARG" >&2
-      exit 1
-      ;;
-  esac
+while [[ $# -gt 0 ]]; do
+    key="$1"
+    case $key in
+        -i)
+            install_to_device="$2"
+            shift
+            ;;
+        -d)
+            dev_team="$2"
+            shift
+            ;;
+        *)
+            if [[ -z $project_path ]]; then
+                project_path=$(realpath "$1")
+            else
+                echo "Unknown option: $key"
+            fi
+            ;;
+    esac
+    shift
 done
 
+if [[ -z $project_path ]]; then
+  echo "You must provide a project path"
+fi
+
 if [ -z "$dev_team" ]; then
-  echo "-devteam option is required"
+  echo "-d option is required"
   exit 1
 else
   echo "dev_team variable is set to $dev_team"
 fi
-
-project_path=$(realpath "$1")
 
 echo "Generating Unity project at path $project_path"
 
