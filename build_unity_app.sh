@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ $# -eq 0 || "$1" == "--help" ]]; then
-    echo "Usage: ./build_unity_app.sh project_path [namespace]"
+    echo "Usage: ./build_unity_app.sh project_path"
     exit 1
 fi
 
@@ -30,9 +30,8 @@ else
 fi
 
 project_path=$(realpath "$1")
-namespace=${2:-default}
 
-echo "Generating Unity project at path $project_path with namespace $namespace"
+echo "Generating Unity project at path $project_path"
 
 # Check if the Editor folder exists, and create it if it doesn't
 if [ ! -d "$project_path/Assets/Editor" ]; then
